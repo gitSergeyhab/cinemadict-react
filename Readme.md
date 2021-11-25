@@ -1,35 +1,14 @@
 # Что это
-Это переделанный на React и TypeScript  проект Html-Academy Cinema Dict;
+Это переделанный на React и TypeScript проект Html-Academy Cinema Dict;
 
 # Используются библиотеки
 
-react, @reduxjs/toolkit, axios, dayjs, react-dom, react-redux, react-router-dom, reselect
+react, @reduxjs/toolkit, react-dom, react-redux, react-router-dom, reselect,
+axios, chart.js, dayjs
 
 # Руководство по работе с проектом
 
 Данный проект создан с помощью [Create React App](https://github.com/facebook/create-react-app).
-
-## Структура проекта
-
----
-
-_Не удаляйте и не изменяйте папки и файлы:_
-_`.editorconfig`, `.gitattributes`, `.gitignore`, `package.json`._
-
----
-
-### public
-
-Директория для размещения статичных ресурсов (шрифты, стили, изображения и так далее). Корневая директория проекта.
-
-
-### src
-
-В директории размещаются исходный код проекта: компоненты, файлы с тестами, модули и так далее. Структура директории `src` может быть произвольной.
-
-## Сценарии
-
-После создания проекта вам доступны следующие сценарии. Обратите внимание, для запуска сценария, вы должны находится в директории проекта (`./project`).
 
 ### Запуск проекта
 

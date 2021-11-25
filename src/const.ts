@@ -1,5 +1,7 @@
 export const FILM_PORTION = 5;
 
+export const CLASS_HIDE_SCROLL = 'hide-overflow';
+
 export const enum AgeRating {
   Zero = '0+',
   Six = '6+',
@@ -27,6 +29,7 @@ export const enum FilmFilter {
   WatchList  = 'Watchlist',
   History = 'History',
   Favorites = 'Favorites',
+  Stats = 'Stats',
 }
 
 export const enum FilmListType {
@@ -78,7 +81,7 @@ export const Rating = {
   },
 };
 
-export const enum Period {
+export enum Period {
   All = 'all time',
   Day = 'day',
   Week = 'week',
@@ -86,4 +89,7 @@ export const enum Period {
   Year = 'year',
 }
 
-
+export enum AppRoute {
+  Main = '/',
+  Stats = '/stats',
+}

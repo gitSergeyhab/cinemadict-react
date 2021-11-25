@@ -8,6 +8,8 @@ import { createAPI } from './services/api';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { fetchFilmAction } from './store/api-actions';
+import { setFilter } from './store/actions';
+import { AppRoute, FilmFilter } from './const';
 
 
 const api = createAPI();
@@ -19,6 +21,7 @@ const store = configureStore({
 
 store.dispatch(fetchFilmAction());
 
+store.dispatch(setFilter(window.location.pathname === AppRoute.Stats ? FilmFilter.Stats : FilmFilter.AllMovies));
 
 ReactDOM.render(
   <Provider store={store}>

@@ -7,8 +7,8 @@ dayjs.extend(relativeTime);
 
 const MINUTES_IN_HOUR = 60;
 
-
-const getHoursAndMinutes = (minutes: number): {hour: number, minute: number} =>
+export type HoursAndMinutesType = {hour: number, minute: number}
+const getHoursAndMinutes = (minutes: number): HoursAndMinutesType =>
   minutes ? {hour: Math.floor(minutes / MINUTES_IN_HOUR), minute: minutes % MINUTES_IN_HOUR} : {hour: 0, minute: 0};
 
 const getStringTime = (minutes: number): string => {

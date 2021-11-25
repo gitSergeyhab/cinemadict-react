@@ -1,20 +1,25 @@
 import { MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FilmFilter, FILM_PORTION } from '../../const';
+import { useHistory } from 'react-router';
+import { AppRoute, FilmFilter, FILM_PORTION } from '../../const';
 import { setFilter, setShownFilmCount, sortFilterFilms } from '../../store/actions';
 import { getFilter, getMovies } from '../../store/film-reducer/film-reducer-selectors';
 
+
 type NavOptionType = {filter: FilmFilter, count: number | null}
+
 function NavOption({filter, count} : NavOptionType): JSX.Element {
 
   const dispatch = useDispatch();
   const currentFilter = useSelector(getFilter);
+  const history = useHistory();
 
   const handleFilterClick = (evt: MouseEvent) => {
     evt.preventDefault();
     dispatch(setFilter(filter));
     dispatch(setShownFilmCount(FILM_PORTION));
     dispatch(sortFilterFilms());
+    history.push(AppRoute.Main);
   };
 
   const spanElement = count ? <span className="main-navigation__item-count">{count}</span> : null;
@@ -26,10 +31,22 @@ function NavOption({filter, count} : NavOptionType): JSX.Element {
 
 export default function MainNav(): JSX.Element {
 
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const filter = useSelector(getFilter);
   const films = useSelector(getMovies);
+
   const favorites = films.filter((film) => film.userDetails.favorite).length;
   const alreadyWatched = films.filter((film) => film.userDetails.alreadyWatched).length;
   const watchList = films.filter((film) => film.userDetails.watchList).length;
+
+  const handleStatsClick = (evt: MouseEvent) => {
+    evt.preventDefault();
+    dispatch(setFilter(FilmFilter.Stats));
+    history.push(AppRoute.Stats);
+  };
+
+  const statsClasses = filter === FilmFilter.Stats ? 'main-navigation__additional main-navigation__item--active' : 'main-navigation__additional';
 
   return (
     <nav className="main-navigation">
@@ -40,7 +57,12 @@ export default function MainNav(): JSX.Element {
         <NavOption filter={FilmFilter.Favorites} count={favorites}/>
 
       </div>
-      <a href="#stats" className="main-navigation__additional">Stats</a>
+      <a
+        onClick={handleStatsClick}
+        href="/" className={statsClasses}
+      >
+        Stats
+      </a>
     </nav>
   );
 }

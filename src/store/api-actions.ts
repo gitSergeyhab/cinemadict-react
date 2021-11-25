@@ -1,8 +1,7 @@
-
 import { APIroute, BtnType, Emotion } from '../const';
 import { adaptToClient, adaptToServer } from '../services/adapters';
 import { Comment, Film, ServerFilm, ThunkActionResult } from '../types/types';
-import { loadComments, loadFilms, setCommentsLoadedStatus, setFilmToPopup, sortFilterFilms } from './actions';
+import { loadComments, loadFilms, setFilmToPopup, sortFilterFilms } from './actions';
 
 
 const createNewFilms = (films: Film[], newFilm: Film): Film[] => {
@@ -45,7 +44,6 @@ export const postStatusFilm = ({film, btnType, status} : PostStatusFilm): ThunkA
 
 export const fetchCommentsAction = (filmId: string): ThunkActionResult =>
   async(dispatch, _getState, api) => {
-    // dispatch(setCommentsLoadedStatus(false));
     const {data} = await api.get<Comment[]>(`${APIroute.Comments}/${filmId}`);
     dispatch(loadComments(data));
   };
@@ -80,6 +78,7 @@ export const deleteCommentAction = ({commentId, film, unBlock, setShake} : Delet
       await api.delete(`${APIroute.Comments}/${commentId}`);
 
       const films = getState().Film.films;
+      // const x = films.reduce((acc, q) => ([...acc, ...q.filmInfo.genre]), []);
       const commentIdInMovie = [...film.comments];
       const newComments = commentIdInMovie.filter((oldId) => oldId !== commentId);
       const newFilm = {...film, comments: newComments};

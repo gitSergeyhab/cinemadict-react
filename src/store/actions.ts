@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { FilmFilter, SortType } from '../const';
+import { FilmFilter, Period, SortType } from '../const';
 import { Comment, Film } from '../types/types';
 
 export const enum ActionType {
@@ -13,6 +13,7 @@ export const enum ActionType {
   LoadComments = 'data/popup/LoadComments',
   SetFilmToPopup = 'popup/SetFilmToPopup',
   SetCommentsLoadedStatus = 'popup/SetCommentsLoadedStatus',
+  SetPeriod = 'stats/SetPeriod',
 }
 
 
@@ -32,5 +33,8 @@ export const setFilmToPopup = createAction(ActionType.SetFilmToPopup, (film: Fil
 export const loadComments = createAction(ActionType.LoadComments, (comments: Comment[]) => ({payload: comments}));
 
 export const setCommentsLoadedStatus = createAction(ActionType.SetCommentsLoadedStatus, (status: boolean) => ({payload: status}));
+
+
+export const setPeriod = createAction(ActionType.SetPeriod, (period: Period) => ({payload: period}));
 
 
