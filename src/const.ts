@@ -32,6 +32,13 @@ export const enum FilmFilter {
   Stats = 'Stats',
 }
 
+export const EmptyResultMessage = {
+  All: 'There are no movies in our database',
+  WatchList: 'There are no movies to watch now',
+  History: 'There are no watched movies now',
+  Favorites: 'There are no favorite movies now',
+};
+
 export const enum FilmListType {
   AllMovies = 'All movies',
   TopRated = 'Top rated',
@@ -59,12 +66,6 @@ export const enum FilmSectionName {
   AllMovies = 'All movies'
 }
 
-export const EmptyResultMessage = {
-  [FilmFilter.AllMovies]: 'There are no movies in our database',
-  [FilmFilter.WatchList]: 'There are no movies to watch now',
-  [FilmFilter.History]: 'There are no watched movies now',
-  [FilmFilter.Favorites]: 'There are no favorite movies now',
-};
 
 export const Rating = {
   Novice: {

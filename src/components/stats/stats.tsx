@@ -2,13 +2,12 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Period } from '../../const';
 import { setPeriod } from '../../store/actions';
-import { getMovies } from '../../store/film-reducer/film-reducer-selectors';
+import { getWatchedMovies } from '../../store/film-reducer/film-reducer-selectors';
 import { getPeriod } from '../../store/stat-reducer/stat-reducer-selectors';
 import { renderChart } from '../../utils/render-chart';
 import { filterWatchedFilmsByTime, getDatePeriod, getGenres, getGenresFromFilms, getSortingCountGenres, getTotalDuration } from '../../utils/stats-utils';
 import { getRatingByWatched } from '../../utils/utils';
 import MainNav from '../main-nav/main-nav';
-// import { renderChart } from '../../utils/render-chart';
 
 const BAR_HEIGHT = 50;
 
@@ -42,19 +41,19 @@ export default function Stats(): JSX.Element {
   const period = useSelector(getPeriod);
   const refGraph = useRef(null);
 
-  const films = useSelector(getMovies);
+  const watchedFilms = useSelector(getWatchedMovies);
+
   const date = getDatePeriod(period);
   const {from, to} = date;
 
   useEffect(() => {
     const convas = refGraph.current;
     if (convas) {
-      renderChart(convas, {films, date});
+      renderChart(convas, {watchedFilms, date});
     }
-  }, [date, films]);
+  }, [date, watchedFilms]);
 
 
-  const watchedFilms = films.filter((film) => film.userDetails.alreadyWatched);
   const rank = getRatingByWatched(watchedFilms.length);
 
   const watchedFilmsByTime = filterWatchedFilmsByTime(watchedFilms, from, to);
@@ -64,9 +63,6 @@ export default function Stats(): JSX.Element {
   const genreList = getGenresFromFilms(watchedFilmsByTime);
 
   const height = getGenres(genreList).length * BAR_HEIGHT || BAR_HEIGHT;
-
-
-  // const height = getGenres(watchedFilmsByTime).length * BAR_HEIGHT || BAR_HEIGHT;
 
   const periods = [Period.All, Period.Day, Period.Week, Period.Month, Period.Year];
 

@@ -16,7 +16,9 @@ export default function FilmExtraBlock({filmBlockType}: {filmBlockType: FilmList
       <h2 className="films-list__title">{filmBlockType}</h2>
 
       <div className="films-list__container">
+
         {filmList}
+
       </div>
     </section>);
 }

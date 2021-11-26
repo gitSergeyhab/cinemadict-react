@@ -2,7 +2,7 @@ import { KeyboardEvent, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Emotion } from '../../const';
 import { deleteCommentAction, postCommentAction } from '../../store/api-actions';
-import { getCommentsLoadedStatus } from '../../store/popup-reducer/popup-reducer-selectors';
+import { getCommentsError, getCommentsLoadedStatus } from '../../store/popup-reducer/popup-reducer-selectors';
 import { Comment, Film } from '../../types/types';
 import { humanizeDate } from '../../utils/date-time-utils';
 
@@ -80,6 +80,7 @@ export default function PopupCommentBlock({comments, film, setShake} : PopupComm
 
   const refText = useRef<HTMLTextAreaElement>(null);
   const areCommentsLoaded = useSelector(getCommentsLoadedStatus);
+  const error = useSelector(getCommentsError);
 
 
   const commentsNum = comments.length;
@@ -98,6 +99,8 @@ export default function PopupCommentBlock({comments, film, setShake} : PopupComm
   const title = areCommentsLoaded ?
     <h3 className="film-details__comments-title">Comments <span className="film-details__comments-count">{commentsNum}</span></h3> :
     <h3 className="film-details__comments-title">Loading <span className="film-details__comments-count"> ... </span></h3>;
+
+  const errorMessage = <h3 className="film-details__comments-title" style={{color: 'orangered'}}>Something is wrong<span className="film-details__comments-count"> ... </span></h3>;
 
   const clear = () => {
     setEmoji(null);
@@ -122,7 +125,7 @@ export default function PopupCommentBlock({comments, film, setShake} : PopupComm
     <div className="film-details__bottom-container">
       <section className="film-details__comments-wrap">
 
-        {title}
+        {error ? errorMessage : title}
 
         <ul className="film-details__comments-list">
 

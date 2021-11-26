@@ -8,6 +8,10 @@ import Popup from '../popup/popup';
 import Stats from '../stats/stats';
 import { AppRoute, CLASS_HIDE_SCROLL } from '../../const';
 import { useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
+import NotFoundPage from '../not-found-page/not-found-page';
 
 
 function App(): JSX.Element {
@@ -25,6 +29,7 @@ function App(): JSX.Element {
 
   return (
     <BrowserRouter>
+      <ToastContainer />
       <Header/>
 
       <Switch>
@@ -33,6 +38,9 @@ function App(): JSX.Element {
         </Route>
         <Route exact path={AppRoute.Stats}>
           <Stats/>
+        </Route>
+        <Route>
+          <NotFoundPage/>
         </Route>
       </Switch>
 

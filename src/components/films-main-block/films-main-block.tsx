@@ -1,8 +1,8 @@
 import { useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FILM_PORTION } from '../../const';
+import { EmptyResultMessage, FilmFilter, FILM_PORTION } from '../../const';
 import { setShownFilmCount, sortFilterFilms } from '../../store/actions';
-import { getMainMovies, getMoviesLoadedStatus, getShownMovieCount } from '../../store/film-reducer/film-reducer-selectors';
+import { getFilter, getMainMovies, getMoviesLoadedStatus, getShownMovieCount } from '../../store/film-reducer/film-reducer-selectors';
 import FilmCard from '../film-card/film-card';
 
 
@@ -22,6 +22,7 @@ export default function FilmMainBlock(): JSX.Element {
   const films = useSelector(getMainMovies);
   const areFilmsLoaded = useSelector(getMoviesLoadedStatus);
   const shownFilms = useSelector(getShownMovieCount);
+  const filter = useSelector(getFilter);
 
   const dispatch = useDispatch();
 
@@ -29,11 +30,23 @@ export default function FilmMainBlock(): JSX.Element {
     dispatch(sortFilterFilms());
   }, [dispatch, areFilmsLoaded]);
 
-  // const [filmNum, setFilmNum] = useState(FILM_PORTION);
 
   if (!areFilmsLoaded) {
     return <span> ups...</span>;
   }
+
+  let emptyMessage = EmptyResultMessage.All;
+  switch (filter) {
+    case FilmFilter.Favorites:
+      emptyMessage = EmptyResultMessage.Favorites; break;
+    case FilmFilter.History:
+      emptyMessage = EmptyResultMessage.History; break;
+    case FilmFilter.WatchList:
+      emptyMessage = EmptyResultMessage.WatchList;
+  }
+
+  const emptyBlock = <div style={{margin: 'auto', fontSize: '27px', paddingTop: '13%', paddingBottom: '8%'}}>{emptyMessage}</div>;
+
 
   const handleBtnClick = () => {
     dispatch(setShownFilmCount(shownFilms + FILM_PORTION));
@@ -48,7 +61,7 @@ export default function FilmMainBlock(): JSX.Element {
       <h2 className="films-list__title visually-hidden">All Movies</h2>
 
       <div className="films-list__container">
-        {filmList}
+        {films.length ? filmList : emptyBlock}
       </div>
 
       {showMoreBtn}

@@ -4,6 +4,7 @@ import { Comment, Film } from '../types/types';
 
 export const enum ActionType {
   LoadFilms = 'data/films/LoadFilms',
+  SetFilmError = 'error/films/SetFilmError',
   SetFilter = 'films/SetFilter',
   SetSortType = 'films/SetSortType',
   SetShownFilmCount = 'films/SetShownFilmCount',
@@ -11,6 +12,7 @@ export const enum ActionType {
   GetTopRated = 'films/GetTopRated',
   GetMostCommented = 'films/GetMostCommented',
   LoadComments = 'data/popup/LoadComments',
+  SetCommentsError = 'error/comments/SetCommentsError',
   SetFilmToPopup = 'popup/SetFilmToPopup',
   SetCommentsLoadedStatus = 'popup/SetCommentsLoadedStatus',
   SetPeriod = 'stats/SetPeriod',
@@ -27,12 +29,16 @@ export const sortFilterFilms = createAction(ActionType.SortFilterFilms);
 
 export const setShownFilmCount = createAction(ActionType.SetShownFilmCount, (count: number) => ({payload: count}));
 
+export const setFilmError = createAction(ActionType.SetFilmError, (error: boolean) => ({payload: error}));
+
 
 export const setFilmToPopup = createAction(ActionType.SetFilmToPopup, (film: Film | null) => ({payload: film}));
 
 export const loadComments = createAction(ActionType.LoadComments, (comments: Comment[]) => ({payload: comments}));
 
 export const setCommentsLoadedStatus = createAction(ActionType.SetCommentsLoadedStatus, (status: boolean) => ({payload: status}));
+
+export const setCommentsError = createAction(ActionType.SetCommentsError, (error: boolean) => ({payload: error}));
 
 
 export const setPeriod = createAction(ActionType.SetPeriod, (period: Period) => ({payload: period}));

@@ -5,10 +5,10 @@ import { filterWatchedFilmsByTime, getSortingCountGenres } from './stats-utils';
 
 type CtxType = string | CanvasRenderingContext2D | HTMLCanvasElement | ArrayLike<CanvasRenderingContext2D | HTMLCanvasElement>
 
-export type RenderChartType = {films: Film[], date: {from: Date, to: Date}}
+export type RenderChartType = {watchedFilms: Film[], date: {from: Date, to: Date}}
 
-export const renderChart = (statisticCtx: CtxType, {films, date: {from, to}} : RenderChartType): Chart => {
-  const watchedFilms = films.filter((film) => film.userDetails.alreadyWatched);
+export const renderChart = (statisticCtx: CtxType, {watchedFilms, date: {from, to}} : RenderChartType): Chart => {
+  // const watchedFilms = films.filter((film) => film.userDetails.alreadyWatched);
   const filteredFilms = filterWatchedFilmsByTime(watchedFilms, from, to);
   const {genres, counts} = getSortingCountGenres(filteredFilms);
 
@@ -21,7 +21,6 @@ export const renderChart = (statisticCtx: CtxType, {films, date: {from, to}} : R
         data: counts,
         backgroundColor: '#ffe800',
         hoverBackgroundColor: '#ffe800',
-        // anchor: 'start',
       }],
     },
     options: {
@@ -47,7 +46,6 @@ export const renderChart = (statisticCtx: CtxType, {films, date: {from, to}} : R
             display: false,
             drawBorder: false,
           },
-          // barThickness: 24,
         }],
         xAxes: [{
           ticks: {

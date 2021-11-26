@@ -4,7 +4,7 @@
 # Используются библиотеки
 
 react, @reduxjs/toolkit, react-dom, react-redux, react-router-dom, reselect,
-axios, chart.js, dayjs
+axios, chart.js, dayjs, react-spinners, react-toastify
 
 # Руководство по работе с проектом
 
