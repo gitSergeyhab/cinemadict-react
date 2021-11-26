@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
-import { FilmListType } from '../../const';
-import { getMostCommentedMovies, getTopRatedMovies } from '../../store/film-reducer/film-reducer-selectors';
+
 import FilmCard from '../film-card/film-card';
+import { getMostCommentedMovies, getTopRatedMovies } from '../../store/film-reducer/film-reducer-selectors';
+import { FilmListType } from '../../const';
 
 
 export default function FilmExtraBlock({filmBlockType}: {filmBlockType: FilmListType}): JSX.Element {
-
 
   const films = useSelector(filmBlockType === FilmListType.MostCommented ? getMostCommentedMovies : getTopRatedMovies);
 
@@ -22,4 +22,3 @@ export default function FilmExtraBlock({filmBlockType}: {filmBlockType: FilmList
       </div>
     </section>);
 }
-

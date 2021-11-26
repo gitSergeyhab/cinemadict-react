@@ -1,9 +1,10 @@
 import { MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { AppRoute, FilmFilter, FILM_PORTION } from '../../const';
+
 import { setFilter, setShownFilmCount, sortFilterFilms } from '../../store/actions';
 import { getFilter, getMovies } from '../../store/film-reducer/film-reducer-selectors';
+import { AppRoute, FilmFilter, FILM_PORTION } from '../../const';
 
 
 type NavOptionType = {filter: FilmFilter, count: number | null}

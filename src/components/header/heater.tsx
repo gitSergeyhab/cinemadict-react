@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { getMovies } from '../../store/film-reducer/film-reducer-selectors';
 import { getRatingByWatched } from '../../utils/utils';
 
+
 export default function Header(): JSX.Element {
 
   const films = useSelector(getMovies);

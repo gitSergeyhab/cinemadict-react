@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+
+
 import App from './components/app/app';
-
-
 import { rootReducer } from './store/root-reducer';
 import { createAPI } from './services/api';
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
 import { fetchFilmAction } from './store/api-actions';
 import { setFilter } from './store/actions';
 import { AppRoute, FilmFilter } from './const';
@@ -21,7 +21,7 @@ const store = configureStore({
 
 store.dispatch(fetchFilmAction());
 
-store.dispatch(setFilter(window.location.pathname === AppRoute.Stats ? FilmFilter.Stats : FilmFilter.AllMovies));
+store.dispatch(setFilter(window.location.pathname === AppRoute.Stats ? FilmFilter.Stats : FilmFilter.AllMovies)); // для индикации нужного фильтра при первоначальной загрузе
 
 ReactDOM.render(
   <Provider store={store}>

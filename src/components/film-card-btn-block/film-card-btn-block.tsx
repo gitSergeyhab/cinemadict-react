@@ -1,7 +1,8 @@
 import { useDispatch } from 'react-redux';
-import { BtnType } from '../../const';
+
 import { postStatusFilm } from '../../store/api-actions';
 import { Film } from '../../types/types';
+import { BtnType } from '../../const';
 
 
 const BTN_ACTIVE_CLASS = 'film-card__controls-item--active';

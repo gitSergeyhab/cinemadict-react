@@ -1,14 +1,15 @@
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 import { Film } from '../types/types';
 import { filterWatchedFilmsByTime, getSortingCountGenres } from './stats-utils';
+
 
 type CtxType = string | CanvasRenderingContext2D | HTMLCanvasElement | ArrayLike<CanvasRenderingContext2D | HTMLCanvasElement>
 
 export type RenderChartType = {watchedFilms: Film[], date: {from: Date, to: Date}}
 
 export const renderChart = (statisticCtx: CtxType, {watchedFilms, date: {from, to}} : RenderChartType): Chart => {
-  // const watchedFilms = films.filter((film) => film.userDetails.alreadyWatched);
   const filteredFilms = filterWatchedFilmsByTime(watchedFilms, from, to);
   const {genres, counts} = getSortingCountGenres(filteredFilms);
 

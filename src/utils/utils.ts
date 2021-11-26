@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { FilmFilter, Rating, SortType } from '../const';
 import { Film } from '../types/types';
+import { FilmFilter, Rating, SortType } from '../const';
 
 
 const ADDITIONAL_BLOCK_LENGTH = 2;
@@ -79,6 +79,13 @@ const cutOffDescription = (description: string): string => {
   return description;
 };
 
+const createNewFilms = (films: Film[], newFilm: Film): Film[] => {
+  const index = films.findIndex((f) => f.id === newFilm.id);
+  return [...films.slice(0, index), newFilm, ...films.slice(index + 1)];
+};
+
+const capitalize = (item: string): string => `${item[0].toUpperCase()}${item.slice(1)}`;
+
 
 export {
   getWatchListFilms,
@@ -93,5 +100,7 @@ export {
   sortDate,
   sortRating,
   getRatingByWatched,
-  cutOffDescription
+  cutOffDescription,
+  createNewFilms,
+  capitalize
 };

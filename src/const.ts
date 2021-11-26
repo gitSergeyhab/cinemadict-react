@@ -45,13 +45,11 @@ export const enum FilmListType {
   MostCommented = 'Most commented',
 }
 
-
 export const enum BtnType {
   WatchList = 'watchList',
   AlreadyWatched = 'alreadyWatched',
   Favorite = 'favorite',
 }
-
 
 export const enum SortType {
   Default = 'default',
@@ -59,13 +57,11 @@ export const enum SortType {
   Rating = 'rating',
 }
 
-
 export const enum FilmSectionName {
   TopRated = 'Top rated',
   MostCommented = 'Most commented',
   AllMovies = 'All movies'
 }
-
 
 export const Rating = {
   Novice: {

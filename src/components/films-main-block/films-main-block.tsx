@@ -1,9 +1,10 @@
 import { useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { EmptyResultMessage, FilmFilter, FILM_PORTION } from '../../const';
+
+import FilmCard from '../film-card/film-card';
 import { setShownFilmCount, sortFilterFilms } from '../../store/actions';
 import { getFilter, getMainMovies, getMoviesLoadedStatus, getShownMovieCount } from '../../store/film-reducer/film-reducer-selectors';
-import FilmCard from '../film-card/film-card';
+import { EmptyResultMessage, FilmFilter, FILM_PORTION } from '../../const';
 
 
 function ShowMoreBtn({onClick}: {onClick: () => void}): JSX.Element {
@@ -31,9 +32,10 @@ export default function FilmMainBlock(): JSX.Element {
   }, [dispatch, areFilmsLoaded]);
 
 
-  if (!areFilmsLoaded) {
-    return <span> ups...</span>;
-  }
+  const handleBtnClick = () => {
+    dispatch(setShownFilmCount(shownFilms + FILM_PORTION));
+  };
+
 
   let emptyMessage = EmptyResultMessage.All;
   switch (filter) {
@@ -46,11 +48,6 @@ export default function FilmMainBlock(): JSX.Element {
   }
 
   const emptyBlock = <div style={{margin: 'auto', fontSize: '27px', paddingTop: '13%', paddingBottom: '8%'}}>{emptyMessage}</div>;
-
-
-  const handleBtnClick = () => {
-    dispatch(setShownFilmCount(shownFilms + FILM_PORTION));
-  };
 
   const filmList = films.slice(0, shownFilms).map((film) => <FilmCard film={film} key={film.id} />);
 

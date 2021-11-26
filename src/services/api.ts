@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
+
 const BASE_URL = 'https://15.ecmascript.pages.academy/cinemaddict';
 const TIMEOUT = 5000;
 const AUTHORIZATION = 'Basic |,,/_Black_Metal_|../';

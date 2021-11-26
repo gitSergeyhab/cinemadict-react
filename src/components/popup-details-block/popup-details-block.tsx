@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+
 import { setFilmToPopup } from '../../store/actions';
 import { Film } from '../../types/types';
 import { getDayMonthYear, getStringTime } from '../../utils/date-time-utils';
+
 
 function GenreSpan({genre} : {genre: string}): JSX.Element {
   return  <span className="film-details__genre">{genre}</span>;
@@ -36,7 +38,6 @@ export default function PopupDetailsBlock({film}: {film: Film}): JSX.Element {
   };
 
   const handleCloseBtnClick = () => closePopup();
-
 
   useEffect(() => {
     document.addEventListener('keydown', escapeKeyDown);
@@ -82,45 +83,61 @@ export default function PopupDetailsBlock({film}: {film: Film}): JSX.Element {
             <tbody>
               <tr className="film-details__row">
                 <td className="film-details__term">Director</td>
-                <td className="film-details__cell">{ director }</td>
+                <td className="film-details__cell">
+                  { director }
+                </td>
               </tr>
+
               <tr className="film-details__row">
                 <td className="film-details__term">Writers</td>
-                <td className="film-details__cell">{ writersList }</td>
+                <td className="film-details__cell">
+                  { writersList }
+                </td>
               </tr>
+
               <tr className="film-details__row">
                 <td className="film-details__term">Actors</td>
-                <td className="film-details__cell">{ actorsList}</td>
+                <td className="film-details__cell">
+                  { actorsList}
+                </td>
               </tr>
+
               <tr className="film-details__row">
                 <td className="film-details__term">Release Date</td>
-                <td className="film-details__cell">{ data }</td>
+                <td className="film-details__cell">
+                  { data }
+                </td>
               </tr>
 
               <tr className="film-details__row">
                 <td className="film-details__term">Runtime</td>
-                <td className="film-details__cell">{ time }</td>
+                <td className="film-details__cell">
+                  { time }
+                </td>
               </tr>
 
               <tr className="film-details__row">
                 <td className="film-details__term">Country</td>
-                <td className="film-details__cell">{ release.releaseCountry }</td>
+                <td className="film-details__cell">
+                  { release.releaseCountry }
+                </td>
               </tr>
+
               <tr className="film-details__row">
-                <td className="film-details__term">{ genreTitle }</td>
+                <td className="film-details__term">
+                  { genreTitle }
+                </td>
                 <td className="film-details__cell">
                   { genresList }
                 </td>
               </tr>
             </tbody>
           </table>
-
           <p className="film-details__film-description">
             {description}
           </p>
         </div>
       </div>
-
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-import { FilmFilter, Period, SortType } from '../const';
 import { Comment, Film } from '../types/types';
+import { FilmFilter, Period, SortType } from '../const';
+
 
 export const enum ActionType {
   LoadFilms = 'data/films/LoadFilms',

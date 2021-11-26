@@ -1,18 +1,18 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Period } from '../../const';
+
+import MainNav from '../main-nav/main-nav';
+import Spinner from '../spinner/spinner';
 import { setPeriod } from '../../store/actions';
-import { getWatchedMovies } from '../../store/film-reducer/film-reducer-selectors';
+import { getMoviesLoadedStatus, getWatchedMovies } from '../../store/film-reducer/film-reducer-selectors';
 import { getPeriod } from '../../store/stat-reducer/stat-reducer-selectors';
 import { renderChart } from '../../utils/render-chart';
 import { filterWatchedFilmsByTime, getDatePeriod, getGenres, getGenresFromFilms, getSortingCountGenres, getTotalDuration } from '../../utils/stats-utils';
-import { getRatingByWatched } from '../../utils/utils';
-import MainNav from '../main-nav/main-nav';
+import { capitalize, getRatingByWatched } from '../../utils/utils';
+import { Period } from '../../const';
+
 
 const BAR_HEIGHT = 50;
-
-
-const capitalize = (item: string) => `${item[0].toUpperCase()}${item.slice(1)}`;
 
 
 function Filter({period} : {period: Period}): JSX.Element {
@@ -40,32 +40,34 @@ export default function Stats(): JSX.Element {
 
   const period = useSelector(getPeriod);
   const refGraph = useRef(null);
-
   const watchedFilms = useSelector(getWatchedMovies);
+  const isLoaded = useSelector(getMoviesLoadedStatus);
 
   const date = getDatePeriod(period);
   const {from, to} = date;
 
   useEffect(() => {
-    const convas = refGraph.current;
-    if (convas) {
-      renderChart(convas, {watchedFilms, date});
+    const canvas = refGraph.current;
+    if (canvas) {
+      renderChart(canvas, {watchedFilms, date});
     }
   }, [date, watchedFilms]);
 
 
-  const rank = getRatingByWatched(watchedFilms.length);
+  if (!isLoaded) {
+    return <Spinner/>;
+  }
 
+
+  const rank = getRatingByWatched(watchedFilms.length);
   const watchedFilmsByTime = filterWatchedFilmsByTime(watchedFilms, from, to);
   const totalDuration = getTotalDuration(watchedFilmsByTime);
   const topGenre = getSortingCountGenres(watchedFilmsByTime).genres[0] || '';
-
   const genreList = getGenresFromFilms(watchedFilmsByTime);
-
   const height = getGenres(genreList).length * BAR_HEIGHT || BAR_HEIGHT;
 
   const periods = [Period.All, Period.Day, Period.Week, Period.Month, Period.Year];
-
+  const periodList = periods.map((filterPeriod) => <Filter period={filterPeriod} key={filterPeriod} />);
 
   return (
     <main className="main">
@@ -81,7 +83,9 @@ export default function Stats(): JSX.Element {
 
         <form action="https://echo.htmlacademy.ru/" method="get" className="statistic__filters">
           <p className="statistic__filters-description">Show stats:</p>
-          {periods.map((filterPeriod) => <Filter period={filterPeriod} key={filterPeriod} />)}
+
+          {periodList}
+
         </form>
 
         <ul className="statistic__text-list">

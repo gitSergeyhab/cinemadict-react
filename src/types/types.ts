@@ -13,14 +13,12 @@ export type Comment = {
   emotion: Emotion,
 };
 
-
 export type UserDetails = {
   watchList: boolean,
   alreadyWatched: boolean,
   watchingDate: string
   favorite: boolean,
 };
-
 
 export type Film = {
   id: string,
@@ -46,7 +44,6 @@ export type Film = {
 };
 
 export type RootState = State;
-
 
 export type ServerFilm = {
     'id': '0',

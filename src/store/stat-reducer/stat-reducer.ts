@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { Period } from '../../const';
 import { setPeriod } from '../actions';
+import { Period } from '../../const';
+
 
 type StatState = {period: Period}
 

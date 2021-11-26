@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCommentsAction } from '../../store/api-actions';
-import { getComments, getPopupFilm } from '../../store/popup-reducer/popup-reducer-selectors';
+
 import PopupCommentBlock from '../popup-comment-block/popup-comment-block';
 import PopupControlsBlock from '../popup-controls-block/popup-controls-block';
 import PopupDetailsBlock from '../popup-details-block/popup-details-block';
+import { fetchCommentsAction } from '../../store/api-actions';
+import { getComments, getPopupFilm } from '../../store/popup-reducer/popup-reducer-selectors';
 
 import './popup.css';
 

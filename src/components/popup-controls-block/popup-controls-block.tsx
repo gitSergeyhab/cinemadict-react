@@ -1,7 +1,8 @@
 import { useDispatch } from 'react-redux';
-import { BtnType } from '../../const';
+
 import { postStatusFilm } from '../../store/api-actions';
 import { Film } from '../../types/types';
+import { BtnType } from '../../const';
 
 
 export const enum ControlType {
@@ -18,7 +19,6 @@ export const enum ControlText {
 
 
 type PopupControlType = {controlType: ControlType, btnType: BtnType, active: boolean, text: ControlText, film: Film};
-
 
 function PopupControl({controlType, btnType, active, text, film}: PopupControlType): JSX.Element {
 
@@ -39,23 +39,16 @@ function PopupControl({controlType, btnType, active, text, film}: PopupControlTy
     >
       {text}
     </button>
-
   );
 }
 
 
 export default function PopupControlsBlock({film} : {film: Film}): JSX.Element {
   return (
-
     <section className="film-details__controls">
-
       <PopupControl controlType={ControlType.WatchList} btnType={BtnType.WatchList} active={film.userDetails.watchList} text={ControlText.WatchList} film={film}/>
       <PopupControl controlType={ControlType.Watched} btnType={BtnType.AlreadyWatched} active={film.userDetails.alreadyWatched} text={ControlText.Watched} film={film}/>
       <PopupControl controlType={ControlType.Favorite} btnType={BtnType.Favorite} active={film.userDetails.favorite} text={ControlText.Favorite} film={film}/>
-
-      {/* <button type="button" className="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-      <button type="button" className="film-details__control-button film-details__control-button--active film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-      <button type="button" className="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button> */}
     </section>
   );
 }

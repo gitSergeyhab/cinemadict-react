@@ -1,9 +1,10 @@
 import { toast } from 'react-toastify';
 
-import { APIroute, BtnType, Emotion } from '../const';
 import { adaptToClient, adaptToServer } from '../services/adapters';
 import { Comment, Film, ServerFilm, ThunkActionResult } from '../types/types';
 import { loadComments, loadFilms, setCommentsError, setFilmError, setFilmToPopup, sortFilterFilms } from './actions';
+import { createNewFilms } from '../utils/utils';
+import { APIroute, BtnType, Emotion } from '../const';
 
 
 const ErrorMessage = {
@@ -12,12 +13,6 @@ const ErrorMessage = {
   FetchCommentsAction: 'unable to download the comments',
   PostCommentAction: 'unable to add comment to this movie',
   DeleteCommentAction: 'unable to remove this comment',
-};
-
-
-const createNewFilms = (films: Film[], newFilm: Film): Film[] => {
-  const index = films.findIndex((f) => f.id === newFilm.id);
-  return [...films.slice(0, index), newFilm, ...films.slice(index + 1)];
 };
 
 
@@ -100,6 +95,7 @@ export const postCommentAction = ({id, comment, emotion, unBlock, clear, setShak
     }
     unBlock();
   };
+
 
 type DeleteCommentType = {commentId: string, film: Film, unBlock: () => void, setShake: (isShake: boolean) => void}
 

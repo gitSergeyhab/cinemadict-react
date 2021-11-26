@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
+
 export default function NotFoundPage(): JSX.Element {
   return (
     <div style={{textAlign: 'center', paddingBottom: '20%'}}>

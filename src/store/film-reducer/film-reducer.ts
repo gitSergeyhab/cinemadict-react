@@ -1,8 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { FilmFilter, FILM_PORTION, SortType } from '../../const';
+
 import { Film } from '../../types/types';
 import { getSortedFilteredFilms } from '../../utils/utils';
 import { loadFilms, setFilmError, setFilter, setShownFilmCount, setSortType, sortFilterFilms } from '../actions';
+import { FilmFilter, FILM_PORTION, SortType } from '../../const';
 
 
 type FilmState ={
@@ -23,7 +24,6 @@ const initialState: FilmState = {
   sortType: SortType.Default,
   shownFilms: FILM_PORTION,
   loadingError: false,
-
 };
 
 export const filmReducer = createReducer(initialState, (builder) => {
