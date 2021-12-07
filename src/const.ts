@@ -90,3 +90,11 @@ export enum AppRoute {
   Main = '/',
   Stats = '/stats',
 }
+
+export const enum ErrorMessage {
+  FetchFilmAction = 'unable to download movies',
+  PostStatusFilm = 'unable to change status the movie',
+  FetchCommentsAction = 'unable to download the comments',
+  PostCommentAction = 'unable to add comment to this movie',
+  DeleteCommentAction = 'unable to remove this comment',
+}

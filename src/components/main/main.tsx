@@ -1,49 +1,31 @@
-import { useSelector } from 'react-redux';
 
 import FilmExtraBlock from '../films-extra-block/films-extra-block';
 import FilmMainBlock from '../films-main-block/films-main-block';
 import MainNav from '../main-nav/main-nav';
 import MainSort from '../main-sort/main-sort';
-import Spinner from '../spinner/spinner';
-import { getFilmsError, getMovies, getMoviesLoadedStatus } from '../../store/film-reducer/film-reducer-selectors';
 import { FilmListType } from '../../const';
+import { Film } from '../../types/types';
 
 
-export default function Main(): JSX.Element {
+export default function Main({films} : {films: Film[]}): JSX.Element {
 
-  const films = useSelector(getMovies);
-  const isLoading = useSelector(getMoviesLoadedStatus);
-  const error = useSelector(getFilmsError);
-
-  if (error) {
-    return (
-      <main className="main">
-        <p style={{color: 'orange', fontSize: '30px', margin: '50px', textAlign: 'center', padding: '10%'}}>
-        Something is wrong ...
-        </p>
-      </main>);
-  }
-
-  if (!isLoading) {
-    return <Spinner/>;
-  }
 
   return (
     <main className="main">
-      <MainNav/>
+      <MainNav films={films}/>
 
-      <MainSort/>
+      <MainSort films={films}/>
 
       <section className="films">
 
-        <FilmMainBlock/>
+        <FilmMainBlock films={films}/>
 
         {
           films.length
             ?
             <>
-              <FilmExtraBlock filmBlockType={FilmListType.TopRated} />
-              <FilmExtraBlock filmBlockType={FilmListType.MostCommented} />
+              <FilmExtraBlock filmBlockType={FilmListType.TopRated} films={films}/>
+              <FilmExtraBlock filmBlockType={FilmListType.MostCommented} films={films} />
             </>
             :
             null

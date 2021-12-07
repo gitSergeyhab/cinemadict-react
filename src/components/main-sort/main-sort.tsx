@@ -1,14 +1,14 @@
 import { MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { setShownFilmCount, setSortType, sortFilterFilms } from '../../store/actions';
-import { getSortType } from '../../store/film-reducer/film-reducer-selectors';
+import { getSortType } from '../../store/catalog-reducer/catalog-reducer-selectors';
 import { FILM_PORTION, SortType } from '../../const';
+import { setMainFilms, setShownMovieCount, setSortType } from '../../store/catalog-reducer/catalog-reducer';
+import { Film } from '../../types/types';
 
 
-type SortOptionType = {sortType: SortType, text: string}
+type SortOptionType = {sortType: SortType, text: string, films: Film[]}
 
-function SortOption({sortType, text} : SortOptionType): JSX.Element {
+function SortOption({sortType, text, films} : SortOptionType): JSX.Element {
 
   const currentSort = useSelector(getSortType);
 
@@ -16,8 +16,8 @@ function SortOption({sortType, text} : SortOptionType): JSX.Element {
   const handleSortLiClick = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     dispatch(setSortType(sortType));
-    dispatch(setShownFilmCount(FILM_PORTION));
-    dispatch(sortFilterFilms());
+    dispatch(setShownMovieCount(FILM_PORTION));
+    dispatch(setMainFilms(films));
   };
 
   const classes = currentSort === sortType ? 'sort__button sort__button--active' : 'sort__button';
@@ -26,13 +26,13 @@ function SortOption({sortType, text} : SortOptionType): JSX.Element {
 }
 
 
-export default function MainSort(): JSX.Element {
+export default function MainSort({films} : {films: Film[]}): JSX.Element {
 
   return (
     <ul className="sort">
-      <SortOption sortType={SortType.Default} text={'Sort by default'}/>
-      <SortOption sortType={SortType.Date} text={'Sort by date'}/>
-      <SortOption sortType={SortType.Rating} text={'Sort by rating'}/>
+      <SortOption sortType={SortType.Default} films={films} text={'Sort by default'}/>
+      <SortOption sortType={SortType.Date} films={films} text={'Sort by date'}/>
+      <SortOption sortType={SortType.Rating} films={films} text={'Sort by rating'}/>
     </ul>
   );
 }

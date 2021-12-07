@@ -1,8 +1,7 @@
-import { useDispatch } from 'react-redux';
-
-import { postStatusFilm } from '../../store/api-actions';
 import { Film } from '../../types/types';
-import { BtnType } from '../../const';
+import { BtnType, ErrorMessage } from '../../const';
+import { usePutFilmMutation } from '../../services/query-api';
+import { toast } from 'react-toastify';
 
 
 const BTN_ACTIVE_CLASS = 'film-card__controls-item--active';
@@ -24,11 +23,15 @@ function FilmCardBtn({btnType, active, text, film} : {btnType: BtnType, active: 
 
   const btnClass = BtnClass[btnType];
 
-  const dispatch = useDispatch();
+  const [putFilm] = usePutFilmMutation();
 
-  const handleBtnClick = () => {
+  const handleBtnClick = async() => {
     const status = !film.userDetails[btnType];
-    dispatch(postStatusFilm({film, btnType, status}));
+    try {
+      await putFilm({film, btnType, status});
+    } catch {
+      toast.error(ErrorMessage.PostStatusFilm);
+    }
   };
 
   const activeClass = active ? BTN_ACTIVE_CLASS : '';

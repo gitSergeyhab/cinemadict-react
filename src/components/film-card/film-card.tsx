@@ -2,10 +2,10 @@ import { MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
 import FilmCardBtnBlock from '../film-card-btn-block/film-card-btn-block';
-import { setCommentsLoadedStatus, setFilmToPopup } from '../../store/actions';
 import { Film } from '../../types/types';
 import { getStringTime, getYear } from '../../utils/date-time-utils';
 import { cutOffDescription } from '../../utils/utils';
+import { setPopup } from '../../store/catalog-reducer/catalog-reducer';
 
 
 export default function FilmCard({film} : {film: Film}): JSX.Element {
@@ -21,8 +21,7 @@ export default function FilmCard({film} : {film: Film}): JSX.Element {
 
   const handleOpenPopupElementClick = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
-    dispatch(setCommentsLoadedStatus(false)); // чтоб пока не загрузились коменту к новому попапу отображался loading
-    dispatch(setFilmToPopup(film));
+    dispatch(setPopup(film.id));
   };
 
   return(

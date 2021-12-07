@@ -1,32 +1,26 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import PopupCommentBlock from '../popup-comment-block/popup-comment-block';
 import PopupControlsBlock from '../popup-controls-block/popup-controls-block';
 import PopupDetailsBlock from '../popup-details-block/popup-details-block';
-import { fetchCommentsAction } from '../../store/api-actions';
-import { getComments, getPopupFilm } from '../../store/popup-reducer/popup-reducer-selectors';
 
 import './popup.css';
+import { getPopupId } from '../../store/catalog-reducer/catalog-reducer-selectors';
+import NotFoundPage from '../not-found-page/not-found-page';
+import { Film } from '../../types/types';
 
-export default function Popup(): JSX.Element {
-
-  const film = useSelector(getPopupFilm);
-
-  const comments = useSelector(getComments);
-
-  const dispatch = useDispatch();
+export default function Popup({films} : {films: Film[]}): JSX.Element {
 
   const [shake, setShake] = useState(false);
 
-  useEffect(() => {
-    if (film) {
-      dispatch(fetchCommentsAction(film.id));
-    }
-  }, [dispatch, film]);
+  const popupId = useSelector(getPopupId);
+
+  const film = films.find((item) => item.id === popupId);
+
 
   if (!film) {
-    return <span>...</span>;
+    return <NotFoundPage/>;
   }
 
   const formClasses = shake ?  'film-details__inner shake' : 'film-details__inner';
@@ -39,7 +33,7 @@ export default function Popup(): JSX.Element {
 
         <PopupControlsBlock film={film}/>
 
-        <PopupCommentBlock comments={comments} film={film} setShake={setShake}/>
+        <PopupCommentBlock film={film} setShake={setShake}/>
 
       </form>
     </section>

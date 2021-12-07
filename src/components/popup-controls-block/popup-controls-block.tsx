@@ -1,8 +1,7 @@
-import { useDispatch } from 'react-redux';
-
-import { postStatusFilm } from '../../store/api-actions';
 import { Film } from '../../types/types';
-import { BtnType } from '../../const';
+import { BtnType, ErrorMessage } from '../../const';
+import { usePutFilmMutation } from '../../services/query-api';
+import { toast } from 'react-toastify';
 
 
 export const enum ControlType {
@@ -22,11 +21,15 @@ type PopupControlType = {controlType: ControlType, btnType: BtnType, active: boo
 
 function PopupControl({controlType, btnType, active, text, film}: PopupControlType): JSX.Element {
 
-  const dispatch = useDispatch();
+  const [putFilm] = usePutFilmMutation();
 
-  const handleControlClick = () => {
+  const handleControlClick = async() => {
     const status = !film.userDetails[btnType];
-    dispatch(postStatusFilm({film, btnType, status}));
+    try {
+      await putFilm({film, btnType, status});
+    } catch {
+      toast.error(ErrorMessage.PostStatusFilm);
+    }
   };
 
   const activeClass = active ? 'film-details__control-button--active' : '';

@@ -3,23 +3,17 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-
 import App from './components/app/app';
 import { rootReducer } from './store/root-reducer';
-import { createAPI } from './services/api';
-import { fetchFilmAction } from './store/api-actions';
-import { setFilter } from './store/actions';
 import { AppRoute, FilmFilter } from './const';
+import { queryApi } from './services/query-api';
+import { setFilter } from './store/catalog-reducer/catalog-reducer';
 
-
-const api = createAPI();
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({thunk: {extraArgument: api}}),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(queryApi.middleware),
 });
-
-store.dispatch(fetchFilmAction());
 
 store.dispatch(setFilter(window.location.pathname === AppRoute.Stats ? FilmFilter.Stats : FilmFilter.AllMovies)); // для индикации нужного фильтра при первоначальной загрузе
 

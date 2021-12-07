@@ -1,11 +1,11 @@
 import { KeyboardEvent, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { deleteCommentAction, postCommentAction } from '../../store/api-actions';
-import { getCommentsError, getCommentsLoadedStatus } from '../../store/popup-reducer/popup-reducer-selectors';
+import ErrorBlock from '../error/error';
 import { Comment, Film } from '../../types/types';
 import { humanizeDate } from '../../utils/date-time-utils';
-import { Emotion } from '../../const';
+import { Emotion, ErrorMessage } from '../../const';
+import { useAddCommentMutation, useDeleteCommentMutation, useGetCommentsQuery } from '../../services/query-api';
+import { toast } from 'react-toastify';
 
 import './popup-comment-block.css';
 
@@ -27,9 +27,9 @@ function EmojiBlock({emoji, onChange, isDisabled} : EmojiBlockTypes): JSX.Elemen
   );
 }
 
-function CommentLi({review, film} : {review: Comment, film: Film}) : JSX.Element {
+function CommentLi({review} : {review: Comment}) : JSX.Element {
 
-  const {id, author, comment, date, emotion} = review;
+  const {author, comment, date, emotion} = review;
 
   const src = `./images/emoji/${emotion}.png`;
   const dateTime = humanizeDate(date);
@@ -37,12 +37,18 @@ function CommentLi({review, film} : {review: Comment, film: Film}) : JSX.Element
   const [shake, setShake] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
 
-  const unBlock = () => setDisabled(false);
+  const [deleteComment] = useDeleteCommentMutation();
 
-  const dispatch = useDispatch();
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async() => {
     setDisabled(true);
-    dispatch(deleteCommentAction({commentId: id, film: film, unBlock, setShake}));
+    try {
+      await deleteComment(review.id).unwrap();
+    } catch {
+      setDisabled(false);
+      setShake(true);
+      setTimeout(() => setShake(false), 1000);
+      toast.error(ErrorMessage.DeleteCommentAction);
+    }
   };
 
   const buttonClasses = shake ? 'film-details__comment-delete shake' : 'film-details__comment-delete';
@@ -73,27 +79,37 @@ function CommentLi({review, film} : {review: Comment, film: Film}) : JSX.Element
 }
 
 
-type PopupCommentType = {comments: Comment[], film: Film, setShake: React.Dispatch<React.SetStateAction<boolean>>}
+type PopupCommentType = {film: Film, setShake: React.Dispatch<React.SetStateAction<boolean>>}
 
-export default function PopupCommentBlock({comments, film, setShake} : PopupCommentType): JSX.Element {
+export default function PopupCommentBlock({film, setShake} : PopupCommentType): JSX.Element {
+
+
+  const { data, isError, isLoading, isFetching } = useGetCommentsQuery(film.id);
+
+  const [addComment] = useAddCommentMutation();
 
   const refText = useRef<HTMLTextAreaElement>(null);
-  const areCommentsLoaded = useSelector(getCommentsLoadedStatus);
-  const error = useSelector(getCommentsError);
-  const dispatch = useDispatch();
 
   const [emoji, setEmoji] = useState<null | Emotion>(null);
   const [isDisabled, setDisabled] = useState(false);
 
+  if (isError) {
+    return <ErrorBlock/>;
+  }
+
+  if (!data) {
+    return <span></span>;
+  }
+
   const img = <img src={`./images/emoji/${emoji}.png`} width="55" height="55" alt="emoji"/>;
-  const commentsNum = comments.length;
-  const commentList = comments.map((review) => <CommentLi review={review} film={film} key={review.id}/>);
+  const commentsNum = data.length;
+  const commentList = data.map((review: Comment) => <CommentLi review={review} key={review.id}/>);
   const emotions = [Emotion.Smile, Emotion.Sleeping, Emotion.Puke, Emotion.Angry];
   const emotionBlock = emotions.map((emo) => <EmojiBlock emoji={emo} onChange={() => setEmoji(emo)} key={emo} isDisabled={isDisabled}/>);
   const errorMessage = <h3 className="film-details__comments-title" style={{color: 'orangered'}}>Something is wrong<span className="film-details__comments-count"> ... </span></h3>;
-  const title = areCommentsLoaded ?
-    <h3 className="film-details__comments-title">Comments <span className="film-details__comments-count">{commentsNum}</span></h3> :
-    <h3 className="film-details__comments-title">Loading <span className="film-details__comments-count"> ... </span></h3>;
+  const title = isLoading || isFetching ?
+    <h3 className="film-details__comments-title">Loading <span className="film-details__comments-count"> ... </span></h3> :
+    <h3 className="film-details__comments-title">Comments <span className="film-details__comments-count">{commentsNum}</span></h3>;
 
 
   const clear = () => {
@@ -105,12 +121,21 @@ export default function PopupCommentBlock({comments, film, setShake} : PopupComm
 
   const unBlock = () => setDisabled(false);
 
-  const handleTextareaKeyDown = (evt: KeyboardEvent<HTMLTextAreaElement>) => {
+
+  const handleTextareaKeyDown = async(evt: KeyboardEvent<HTMLTextAreaElement>) => {
     if (evt.ctrlKey && evt.key === 'Enter' && refText.current && emoji) {
       const comment = refText.current.value.trim();
       if (comment) {
         setDisabled(true);
-        dispatch(postCommentAction({id: film.id, comment, emotion: emoji, unBlock, clear, setShake}));
+        try {
+          await addComment({body: {comment, emotion: emoji}, filmId: film.id}).unwrap();
+          clear();
+        } catch {
+          setShake(true);
+          setTimeout(() => setShake(false), 1000);
+          toast.error(ErrorMessage.PostCommentAction);
+        }
+        unBlock();
       }
     }
   };
@@ -119,11 +144,11 @@ export default function PopupCommentBlock({comments, film, setShake} : PopupComm
     <div className="film-details__bottom-container">
       <section className="film-details__comments-wrap">
 
-        {error ? errorMessage : title}
+        {isError ? errorMessage : title}
 
         <ul className="film-details__comments-list">
 
-          {areCommentsLoaded ? commentList : null}
+          {isFetching || isLoading ? null : commentList}
 
         </ul>
 

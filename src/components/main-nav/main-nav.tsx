@@ -2,14 +2,15 @@ import { MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { setFilter, setShownFilmCount, sortFilterFilms } from '../../store/actions';
-import { getFilter, getMovies } from '../../store/film-reducer/film-reducer-selectors';
+import { getFilter } from '../../store/catalog-reducer/catalog-reducer-selectors';
+import { Film } from '../../types/types';
+import { setFilter, setMainFilms, setShownMovieCount } from '../../store/catalog-reducer/catalog-reducer';
 import { AppRoute, FilmFilter, FILM_PORTION } from '../../const';
 
 
-type NavOptionType = {filter: FilmFilter, count: number | null}
+type NavOptionType = {films: Film[], filter: FilmFilter, count: number | null}
 
-function NavOption({filter, count} : NavOptionType): JSX.Element {
+function NavOption({films, filter, count} : NavOptionType): JSX.Element {
 
   const dispatch = useDispatch();
   const currentFilter = useSelector(getFilter);
@@ -18,8 +19,8 @@ function NavOption({filter, count} : NavOptionType): JSX.Element {
   const handleFilterClick = (evt: MouseEvent) => {
     evt.preventDefault();
     dispatch(setFilter(filter));
-    dispatch(setShownFilmCount(FILM_PORTION));
-    dispatch(sortFilterFilms());
+    dispatch(setShownMovieCount(FILM_PORTION));
+    dispatch(setMainFilms(films));
     history.push(AppRoute.Main);
   };
 
@@ -30,12 +31,11 @@ function NavOption({filter, count} : NavOptionType): JSX.Element {
 }
 
 
-export default function MainNav(): JSX.Element {
+export default function MainNav({films} : {films: Film[]}): JSX.Element {
 
   const history = useHistory();
   const dispatch = useDispatch();
   const filter = useSelector(getFilter);
-  const films = useSelector(getMovies);
 
   const favorites = films.filter((film) => film.userDetails.favorite).length;
   const alreadyWatched = films.filter((film) => film.userDetails.alreadyWatched).length;
@@ -52,10 +52,10 @@ export default function MainNav(): JSX.Element {
   return (
     <nav className="main-navigation">
       <div className="main-navigation__items">
-        <NavOption filter={FilmFilter.AllMovies} count={null}/>
-        <NavOption filter={FilmFilter.WatchList} count={watchList}/>
-        <NavOption filter={FilmFilter.History} count={alreadyWatched}/>
-        <NavOption filter={FilmFilter.Favorites} count={favorites}/>
+        <NavOption filter={FilmFilter.AllMovies} count={null} films={films}/>
+        <NavOption filter={FilmFilter.WatchList} count={watchList} films={films}/>
+        <NavOption filter={FilmFilter.History} count={alreadyWatched} films={films}/>
+        <NavOption filter={FilmFilter.Favorites} count={favorites} films={films}/>
 
       </div>
       <a

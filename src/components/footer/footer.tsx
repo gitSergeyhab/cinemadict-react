@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux';
-import { getMovies } from '../../store/film-reducer/film-reducer-selectors';
+import { Film } from '../../types/types';
 
 
-export default function Footer(): JSX.Element {
-  const films = useSelector(getMovies);
+export default function Footer({films} : {films: Film[]}): JSX.Element {
+
+
   return (
     <footer className="footer">
       <section className="footer__logo logo logo--smaller">Cinemaddict</section>

@@ -2,14 +2,13 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import MainNav from '../main-nav/main-nav';
-import Spinner from '../spinner/spinner';
-import { setPeriod } from '../../store/actions';
-import { getMoviesLoadedStatus, getWatchedMovies } from '../../store/film-reducer/film-reducer-selectors';
-import { getPeriod } from '../../store/stat-reducer/stat-reducer-selectors';
 import { renderChart } from '../../utils/render-chart';
 import { filterWatchedFilmsByTime, getDatePeriod, getGenres, getGenresFromFilms, getSortingCountGenres, getTotalDuration } from '../../utils/stats-utils';
 import { capitalize, getRatingByWatched } from '../../utils/utils';
 import { Period } from '../../const';
+import { Film } from '../../types/types';
+import { getPeriod } from '../../store/stat-reducer/stat-reducer-selectors';
+import { setPeriod } from '../../store/stat-reducer/stat-reducer';
 
 
 const BAR_HEIGHT = 50;
@@ -36,12 +35,13 @@ function Filter({period} : {period: Period}): JSX.Element {
 }
 
 
-export default function Stats(): JSX.Element {
+export default function Stats({films} : {films: Film[]}): JSX.Element {
 
   const period = useSelector(getPeriod);
   const refGraph = useRef(null);
-  const watchedFilms = useSelector(getWatchedMovies);
-  const isLoaded = useSelector(getMoviesLoadedStatus);
+
+
+  const watchedFilms = films.filter((film: Film) => film.userDetails.alreadyWatched);
 
   const date = getDatePeriod(period);
   const {from, to} = date;
@@ -52,11 +52,6 @@ export default function Stats(): JSX.Element {
       renderChart(canvas, {watchedFilms, date});
     }
   }, [date, watchedFilms]);
-
-
-  if (!isLoaded) {
-    return <Spinner/>;
-  }
 
 
   const rank = getRatingByWatched(watchedFilms.length);
@@ -72,7 +67,7 @@ export default function Stats(): JSX.Element {
   return (
     <main className="main">
 
-      <MainNav/>
+      <MainNav films={films}/>
 
       <section className="statistic">
         <p className="statistic__rank">

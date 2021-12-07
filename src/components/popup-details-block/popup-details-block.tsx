@@ -1,9 +1,15 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { setPopup } from '../../store/catalog-reducer/catalog-reducer';
 
-import { setFilmToPopup } from '../../store/actions';
 import { Film } from '../../types/types';
 import { getDayMonthYear, getStringTime } from '../../utils/date-time-utils';
+
+
+const Selector = {
+  Card: '.film-card',
+  Popup: '.film-details',
+};
 
 
 function GenreSpan({genre} : {genre: string}): JSX.Element {
@@ -23,7 +29,7 @@ export default function PopupDetailsBlock({film}: {film: Film}): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const closePopup = () => dispatch(setFilmToPopup(null));
+  const closePopup = () => dispatch(setPopup(null));
 
   const escapeKeyDown = (evt: any) => {
     if (evt.key === 'Escape') {
@@ -32,7 +38,7 @@ export default function PopupDetailsBlock({film}: {film: Film}): JSX.Element {
   };
 
   const outPopupClick = (evt: any) => {
-    if(!evt.target.closest('.film-details') && !evt.target.closest('.film-card')) {
+    if(!evt.target.closest(Selector.Popup) && !evt.target.closest(Selector.Card)) {
       closePopup();
     }
   };

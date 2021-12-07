@@ -3,4 +3,4 @@ import { ReducerName } from '../root-reducer';
 import { Period } from '../../const';
 
 
-export const getPeriod = (state: RootState): Period => state[ReducerName.Stat].period;
+export const getPeriod = (state: RootState): Period => state[ReducerName.Stats].period;

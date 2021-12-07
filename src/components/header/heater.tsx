@@ -1,11 +1,9 @@
-import { useSelector } from 'react-redux';
-import { getMovies } from '../../store/film-reducer/film-reducer-selectors';
+import { Film } from '../../types/types';
 import { getRatingByWatched } from '../../utils/utils';
 
 
-export default function Header(): JSX.Element {
+export default function Header({films} : {films: Film[]}): JSX.Element {
 
-  const films = useSelector(getMovies);
   const rang = getRatingByWatched(films.filter((film) => film.userDetails.alreadyWatched).length);
 
   return (

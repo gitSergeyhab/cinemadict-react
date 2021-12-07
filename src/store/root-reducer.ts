@@ -1,20 +1,19 @@
 import { combineReducers } from 'redux';
 
-import { popupReducer } from './popup-reducer/popup-reducer';
-import { filmReducer } from './film-reducer/film-reducer';
-import { statReducer } from './stat-reducer/stat-reducer';
+import { catalogReducer } from './catalog-reducer/catalog-reducer';
+import { statsReducer } from './stat-reducer/stat-reducer';
+import { queryApi } from '../services/query-api';
 
 
 export const enum ReducerName {
-  Film = 'Film',
-  Popup = 'Popup',
-  Stat = 'Stat',
+  Catalog = 'catalog',
+  Stats = 'stats',
 }
 
 export const rootReducer = combineReducers({
-  [ReducerName.Film]: filmReducer,
-  [ReducerName.Popup]: popupReducer,
-  [ReducerName.Stat]: statReducer,
+  [queryApi.reducerPath]: queryApi.reducer,
+  [ReducerName.Catalog]: catalogReducer.reducer,
+  [ReducerName.Stats]: statsReducer.reducer,
 });
 
 export type State = ReturnType<typeof rootReducer>;

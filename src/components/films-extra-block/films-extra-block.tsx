@@ -1,15 +1,15 @@
-import { useSelector } from 'react-redux';
-
 import FilmCard from '../film-card/film-card';
-import { getMostCommentedMovies, getTopRatedMovies } from '../../store/film-reducer/film-reducer-selectors';
 import { FilmListType } from '../../const';
+import { getMostCommentedFilms, getTopFilms } from '../../utils/utils';
+import { Film } from '../../types/types';
 
 
-export default function FilmExtraBlock({filmBlockType}: {filmBlockType: FilmListType}): JSX.Element {
+export default function FilmExtraBlock({filmBlockType, films}: {filmBlockType: FilmListType, films: Film[]}): JSX.Element {
 
-  const films = useSelector(filmBlockType === FilmListType.MostCommented ? getMostCommentedMovies : getTopRatedMovies);
 
-  const filmList = films.map((film) => <FilmCard film={film} key={film.id} />);
+  const extraFilms = filmBlockType === FilmListType.MostCommented ? getMostCommentedFilms(films) : getTopFilms(films);
+
+  const filmList = extraFilms.map((film) => <FilmCard film={film} key={film.id} />);
 
   return (
     <section className="films-list films-list--extra">
