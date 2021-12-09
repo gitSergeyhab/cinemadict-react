@@ -1,6 +1,10 @@
 # Что это
 Это переделанный на React и TypeScript проект Html-Academy Cinema Dict;
 
+## BRANCHES
+master: RTK;
+rtkq: RTK with RTK Query;
+
 # Используются библиотеки
 
 react, @reduxjs/toolkit, react-dom, react-redux, react-router-dom, reselect,
