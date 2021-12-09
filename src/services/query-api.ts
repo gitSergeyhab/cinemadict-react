@@ -1,19 +1,16 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import { APIroute, BtnType } from '../const';
-import { Comment, Film, ServerFilm } from '../types/types';
-import { adaptToServer } from './adapters';
+import { APIroute } from '../const';
+import { Comment, ServerFilm } from '../types/types';
+import { changeStatusFilm } from '../utils/utils';
+
 
 const BASE_URL = 'https://15.ecmascript.pages.academy/cinemaddict';
 const AUTHORIZATION = 'Basic |,,/_Black_Metal_|../';
-
 
 const TagType = {
   Comments: 'Comments',
   Films: 'Films',
 };
-
-
-const changeStatusFilm = (film: Film, btnType: BtnType, status: boolean) => adaptToServer({...film, userDetails: {...film.userDetails, [btnType]: status}});
 
 
 export const queryApi = createApi({
@@ -52,10 +49,16 @@ export const queryApi = createApi({
 
     deleteComment: build.mutation({
       query: (id) => ({
-        url: `${APIroute.Comments}/${id}_`,
+        url: `${APIroute.Comments}/${id}`,
         method: 'DELETE',
+        responseHandler: (response) => response.text(),
       }),
-      invalidatesTags: [{type: TagType.Comments, id: 'LIST'}, {type: TagType.Films, id: 'LIST'}],
+      invalidatesTags: (_, error) => {
+        if (error?.status && error.status === 404) {
+          return [];
+        }
+        return [{type: TagType.Comments, id: 'LIST'}, {type: TagType.Films, id: 'LIST'}];
+      },
     }),
 
     addComment: build.mutation({

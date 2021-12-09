@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
-import { Film } from '../types/types';
-import { FilmFilter, Rating, SortType } from '../const';
+import { Film, ServerFilm } from '../types/types';
+import { BtnType, FilmFilter, Rating, SortType } from '../const';
+import { adaptToServer } from '../services/adapters';
 
 
 const ADDITIONAL_BLOCK_LENGTH = 2;
@@ -86,6 +87,8 @@ const createNewFilms = (films: Film[], newFilm: Film): Film[] => {
 
 const capitalize = (item: string): string => `${item[0].toUpperCase()}${item.slice(1)}`;
 
+const changeStatusFilm = (film: Film, btnType: BtnType, status: boolean): ServerFilm => adaptToServer({...film, userDetails: {...film.userDetails, [btnType]: status}});
+
 
 export {
   getWatchListFilms,
@@ -102,5 +105,6 @@ export {
   getRatingByWatched,
   cutOffDescription,
   createNewFilms,
-  capitalize
+  capitalize,
+  changeStatusFilm
 };
