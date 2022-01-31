@@ -1,16 +1,18 @@
 # Что это
 Это переделанный на React и TypeScript проект Html-Academy Cinema Dict;
 
+( <a href="https://github.com/gitSergeyhab/1661607-cinemaddict-15">Здесь эиот же проект, выполненный на чистом JS </a> )
+
+
 ## BRANCHES
 
-<b>master:</b> <i>RTK</i>;
+<b>master: ```RTK```;
 
-<b>rtkq:</b> RTK with <i>RTK Query</i>;
+<b>rtkq:</b> RTK with ```RTK Query```;
 
 # Используются библиотеки
 
-react, @reduxjs/toolkit, react-dom, react-redux, react-router-dom, reselect,
-axios, chart.js, dayjs, react-spinners, react-toastify
+```react``` ```redux``` ```@reduxjs/toolkit``` ```chart.js``` ```dayjs``` ```...```
 
 ## Деплой на vercel:
 
