@@ -2,17 +2,23 @@
 Это переделанный на React и TypeScript проект Html-Academy Cinema Dict;
 
 ## BRANCHES
-master: RTK;
-rtkq: RTK with RTK Query;
+
+<b>master:</b> <i>RTK</i>;
+
+<b>rtkq:</b> RTK with <i>RTK Query</i>;
 
 # Используются библиотеки
 
 react, @reduxjs/toolkit, react-dom, react-redux, react-router-dom, reselect,
 axios, chart.js, dayjs, react-spinners, react-toastify
 
-# Руководство по работе с проектом
+## Деплой на vercel:
 
-Данный проект создан с помощью [Create React App](https://github.com/facebook/create-react-app).
+https://cinemadict-react.vercel.app/
+
+<a href="https://cinemadict-react.vercel.app/">
+  <img src="./public/cinemadict-react.png" width="80%">
+</a>
 
 ### Запуск проекта
 
